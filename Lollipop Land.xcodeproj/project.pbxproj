@@ -8,26 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		5231742022001F20004346BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5231741F22001F20004346BA /* AppDelegate.swift */; };
-		5231742222001F20004346BA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5231742122001F20004346BA /* GameScene.sks */; };
-		5231742422001F20004346BA /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5231742322001F20004346BA /* Actions.sks */; };
 		5231742622001F20004346BA /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5231742522001F20004346BA /* GameScene.swift */; };
 		5231742822001F20004346BA /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5231742722001F20004346BA /* GameViewController.swift */; };
 		5231742B22001F20004346BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5231742922001F20004346BA /* Main.storyboard */; };
 		5231742D22001F21004346BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5231742C22001F21004346BA /* Assets.xcassets */; };
 		5231743022001F21004346BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5231742E22001F21004346BA /* LaunchScreen.storyboard */; };
+		5231743E22002102004346BA /* player.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 5231743D22002102004346BA /* player.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5231741C22001F20004346BA /* Lollipop Land.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lollipop Land.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5231741F22001F20004346BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		5231742122001F20004346BA /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		5231742322001F20004346BA /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		5231742522001F20004346BA /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		5231742722001F20004346BA /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		5231742A22001F20004346BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5231742C22001F21004346BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5231742F22001F21004346BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5231743122001F21004346BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5231743D22002102004346BA /* player.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = player.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,17 +58,48 @@
 		5231741E22001F20004346BA /* Lollipop Land */ = {
 			isa = PBXGroup;
 			children = (
-				5231741F22001F20004346BA /* AppDelegate.swift */,
-				5231742122001F20004346BA /* GameScene.sks */,
-				5231742322001F20004346BA /* Actions.sks */,
-				5231742522001F20004346BA /* GameScene.swift */,
+				5231743D22002102004346BA /* player.atlas */,
+				5231743122001F21004346BA /* Info.plist */,
+				5231743A22001FE1004346BA /* Scenes */,
+				5231743922001FD1004346BA /* Assets */,
+				5231743822001FC1004346BA /* Tamplates */,
+				5231743722001FB7004346BA /* ViewControllers */,
+			);
+			path = "Lollipop Land";
+			sourceTree = "<group>";
+		};
+		5231743722001FB7004346BA /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
 				5231742722001F20004346BA /* GameViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		5231743822001FC1004346BA /* Tamplates */ = {
+			isa = PBXGroup;
+			children = (
+				5231741F22001F20004346BA /* AppDelegate.swift */,
+			);
+			path = Tamplates;
+			sourceTree = "<group>";
+		};
+		5231743922001FD1004346BA /* Assets */ = {
+			isa = PBXGroup;
+			children = (
 				5231742922001F20004346BA /* Main.storyboard */,
 				5231742C22001F21004346BA /* Assets.xcassets */,
 				5231742E22001F21004346BA /* LaunchScreen.storyboard */,
-				5231743122001F21004346BA /* Info.plist */,
 			);
-			path = "Lollipop Land";
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		5231743A22001FE1004346BA /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				5231742522001F20004346BA /* GameScene.swift */,
+			);
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -131,11 +160,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5231743E22002102004346BA /* player.atlas in Resources */,
 				5231742B22001F20004346BA /* Main.storyboard in Resources */,
-				5231742222001F20004346BA /* GameScene.sks in Resources */,
 				5231742D22001F21004346BA /* Assets.xcassets in Resources */,
 				5231743022001F21004346BA /* LaunchScreen.storyboard in Resources */,
-				5231742422001F20004346BA /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
