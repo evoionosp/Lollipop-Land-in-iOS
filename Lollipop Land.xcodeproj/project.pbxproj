@@ -14,6 +14,7 @@
 		5231742D22001F21004346BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5231742C22001F21004346BA /* Assets.xcassets */; };
 		5231743022001F21004346BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5231742E22001F21004346BA /* LaunchScreen.storyboard */; };
 		5231743E22002102004346BA /* player.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 5231743D22002102004346BA /* player.atlas */; };
+		5231744022002292004346BA /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5231743F22002292004346BA /* Setting.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		5231742F22001F21004346BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5231743122001F21004346BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5231743D22002102004346BA /* player.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = player.atlas; sourceTree = "<group>"; };
+		5231743F22002292004346BA /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				5231741F22001F20004346BA /* AppDelegate.swift */,
+				5231743F22002292004346BA /* Setting.swift */,
 			);
 			path = Tamplates;
 			sourceTree = "<group>";
@@ -176,6 +179,7 @@
 			files = (
 				5231742622001F20004346BA /* GameScene.swift in Sources */,
 				5231742822001F20004346BA /* GameViewController.swift in Sources */,
+				5231744022002292004346BA /* Setting.swift in Sources */,
 				5231742022001F20004346BA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
