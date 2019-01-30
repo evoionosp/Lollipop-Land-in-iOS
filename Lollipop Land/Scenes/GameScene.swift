@@ -41,11 +41,49 @@ class GameScene: SKScene {
             taptoplayLbl.removeFromParent()
         } else {
             if died == false {
-                //TODO: Remember
+                //TODO: Move Bird
             }
         }
         
+        
+        for touch in touches{
+            let location = touch.location(in: self)
+            if died == true{
+                if restartBtn.contains(location){
+                    if UserDefaults.standard.object(forKey: "highestScore") != nil {
+                        let hscore = UserDefaults.standard.integer(forKey: "highestScore")
+                        if hscore < Int(scoreLabel.text!)!{
+                            UserDefaults.standard.set(scoreLabel.text, forKey: "highestScore")
+                        }
+                    } else {
+                        UserDefaults.standard.set(0, forKey: "highestScore")
+                    }
+                    resetScene()
+                }
+            } else {
+                if pauseBtn.contains(location){
+                    if self.isPaused == false{
+                        self.isPaused = true
+                        pauseBtn.texture = SKTexture(imageNamed: "play")
+                    } else {
+                        self.isPaused = false
+                        pauseBtn.texture = SKTexture(imageNamed: "pause")
+                    }
+                }
+            }
+        }
     }
+    
+    
+    func resetScene(){
+        self.removeAllChildren()
+        self.removeAllActions()
+        died = false
+        gameStarted = false
+        score = 0
+        setupScene()
+    }
+    
     
     
     override func update(_ currentTime: TimeInterval) {
