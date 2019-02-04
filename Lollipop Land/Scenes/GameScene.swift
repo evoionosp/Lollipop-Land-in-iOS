@@ -21,6 +21,8 @@ class GameScene: SKScene {
     var restartBtn = SKSpriteNode()
     var pauseBtn = SKSpriteNode()
     var logoImg = SKSpriteNode()
+    var popPair = SKNode()
+     var moveAndRemove = SKAction()
     
     override func sceneDidLoad() {
 
@@ -39,6 +41,23 @@ class GameScene: SKScene {
                 self.logoImg.removeFromParent()
             })
             taptoplayLbl.removeFromParent()
+            SKAction.wait(forDuration: 3.5)
+            let spawn = SKAction.run({
+                () in
+                self.popPair = self.createLollipops()
+                self.popPair.run(SKAction.fadeIn(withDuration: 1))
+                self.addChild(self.popPair)
+            })
+            
+            let delay = SKAction.wait(forDuration: 2.2)
+            let SpawnDelay = SKAction.sequence([spawn, delay])
+            let spawnDelayForever = SKAction.repeatForever(SpawnDelay)
+            self.run(spawnDelayForever)
+            let topPop = SKSpriteNode(imageNamed: "pop_1")
+            let distance = CGFloat(self.frame.width + topPop.frame.width)
+            let movePops = SKAction.moveBy(x: -distance, y: 0, duration: TimeInterval(0.008 * distance))
+            let removePops = SKAction.removeFromParent()
+            moveAndRemove = SKAction.sequence([movePops, removePops])
         } else {
             if died == false {
                 //TODO: Move Bird
@@ -222,6 +241,59 @@ class GameScene: SKScene {
         logoImg.setScale(0.5)
         self.addChild(logoImg)
         logoImg.run(SKAction.scale(to: 1.0, duration: 0.3))
+    }
+    
+    func createLollipops() -> SKNode  {
+        
+        popPair = SKNode()
+        popPair.name = "popPair"
+        
+        let topStick = SKSpriteNode(imageNamed: "stick")
+        let bottomStick = SKSpriteNode(imageNamed: "stick")
+        
+        let topPop = SKSpriteNode(imageNamed: "pop_1") //pink
+        let bottomPop = SKSpriteNode(imageNamed: "pop_2") //green
+        
+        topStick.setScale(0.3)
+        bottomStick.setScale(0.3)
+        topPop.setScale(1)
+        bottomPop.setScale(1)
+        
+        topStick.position = CGPoint(x: self.frame.width + 25, y: UIScreen.main.bounds.height)  //+420
+        bottomStick.position = CGPoint(x: self.frame.width + 25, y: 0)  //-420
+    
+        //topStick.zRotation = CGFloat(Double.pi)
+        
+        topPop.position = CGPoint(x: topStick.position.x, y: topStick.position.y - topStick.frame.height/2)
+        bottomPop.position = CGPoint(x: bottomStick.position.x, y: -bottomStick.position.y + bottomStick.frame.height/2)
+        
+        
+        
+        
+        popPair.addChild(topStick)
+        popPair.addChild(topPop)
+        popPair.addChild(bottomStick)
+        popPair.addChild(bottomPop)
+        
+        bottomStick.zPosition = ZPositions.stick
+        topStick.zPosition = ZPositions.stick
+        bottomPop.zPosition = ZPositions.pop
+        topPop.zPosition = ZPositions.pop
+        
+        let randomPosition = random(min: -200, max: 200)
+        popPair.position.y += randomPosition
+        
+        popPair.run(moveAndRemove)
+        
+        return popPair
+    }
+    
+    func random() -> CGFloat{
+        return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
+    }
+    
+    func random(min : CGFloat, max : CGFloat) -> CGFloat{
+        return random() * (max - min) + min
     }
 }
 
