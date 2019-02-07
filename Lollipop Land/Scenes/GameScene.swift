@@ -14,7 +14,7 @@ class GameScene: SKScene {
     var gameStarted = Bool(false)
     var died = Bool(false)
     
-    var score = Int(0)
+    var score = Int(-1)
     var scoreLabel = SKLabelNode()
     var highscoreLbl = SKLabelNode()
     var taptoplayLbl = SKLabelNode()
@@ -23,6 +23,12 @@ class GameScene: SKScene {
     var logoImg = SKSpriteNode()
     var popPair = SKNode()
      var moveAndRemove = SKAction()
+    
+    //CREATE THE BIRD ATLAS FOR ANIMATION
+    let birdAtlas = SKTextureAtlas(named:"player")
+    var birdSprites = Array<SKTexture>()
+    var bird = SKSpriteNode()
+    var repeatActionBird = SKAction()
     
     override func sceneDidLoad() {
 
@@ -36,6 +42,7 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameStarted == false{
             gameStarted =  true
+            bird.physicsBody?.affectedByGravity = true
             createPauseBtn()
             logoImg.run(SKAction.scale(to: 0.5, duration: 0.3), completion: {
                 self.logoImg.removeFromParent()
@@ -47,6 +54,7 @@ class GameScene: SKScene {
                 self.popPair = self.createLollipops()
                 self.popPair.run(SKAction.fadeIn(withDuration: 1))
                 self.addChild(self.popPair)
+                self.increaseScore()
             })
             
             let delay = SKAction.wait(forDuration: 2.2)
@@ -58,9 +66,13 @@ class GameScene: SKScene {
             let movePops = SKAction.moveBy(x: -distance, y: 0, duration: TimeInterval(0.008 * distance))
             let removePops = SKAction.removeFromParent()
             moveAndRemove = SKAction.sequence([movePops, removePops])
+            
+            bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+            bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 50))
         } else {
             if died == false {
-                //TODO: Move Bird
+                bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 50))
             }
         }
         
@@ -141,6 +153,20 @@ class GameScene: SKScene {
             self.addChild(background)
         }
         
+        //SET UP THE BIRD SPRITES FOR ANIMATION
+        birdSprites.append(birdAtlas.textureNamed("bird1"))
+        birdSprites.append(birdAtlas.textureNamed("bird2"))
+        birdSprites.append(birdAtlas.textureNamed("bird3"))
+        birdSprites.append(birdAtlas.textureNamed("bird4"))
+        
+        self.bird = createBird()
+        bird.zPosition = ZPositions.bird
+        self.addChild(bird)
+        
+        //ANIMATE THE BIRD AND REPEAT THE ANIMATION FOREVER
+        let animatebird = SKAction.animate(with: self.birdSprites, timePerFrame: 0.1)
+        self.repeatActionBird = SKAction.repeatForever(animatebird)
+        
         scoreLabel = createScoreLabel()
         self.addChild(scoreLabel)
         
@@ -167,6 +193,23 @@ class GameScene: SKScene {
         }
        // let gameoverScene = GameoverScene(size: view!.bounds.size)
        // view!.presentScene(gameoverScene)
+    }
+    
+    func createBird() -> SKSpriteNode {
+        let bird = SKSpriteNode(texture: SKTextureAtlas(named:"player").textureNamed("bird1"))
+        bird.size = CGSize(width: 50, height: 50)
+        bird.position = CGPoint(x:self.frame.midX, y:self.frame.midY)
+        
+        bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.width / 2)
+        bird.physicsBody?.linearDamping = 1.1
+        bird.physicsBody?.restitution = 0
+        bird.physicsBody?.categoryBitMask = PhysicsCategories.birdCategory
+        bird.physicsBody?.collisionBitMask = PhysicsCategories.lollipopCategory | PhysicsCategories.groundCategory
+        bird.physicsBody?.contactTestBitMask = PhysicsCategories.lollipopCategory | PhysicsCategories.flowerCategory | PhysicsCategories.groundCategory
+        bird.physicsBody?.affectedByGravity = false
+        bird.physicsBody?.isDynamic = true
+        
+        return bird
     }
     
     
@@ -251,8 +294,13 @@ class GameScene: SKScene {
         let topStick = SKSpriteNode(imageNamed: "stick")
         let bottomStick = SKSpriteNode(imageNamed: "stick")
         
-        let topPop = SKSpriteNode(imageNamed: "pop_1") //pink
-        let bottomPop = SKSpriteNode(imageNamed: "pop_2") //green
+        let currentPopTheme = Int(arc4random_uniform(UInt32(7)))
+        let topPop = SKSpriteNode(imageNamed: "pop_\(currentPopTheme)") //pink
+        let bottomPop = SKSpriteNode(imageNamed: "pop_\(currentPopTheme)") //green,
+        
+        let animatePop = SKAction.rotate(byAngle: 360, duration: 100)
+        topPop.run(animatePop)
+        bottomPop.run(animatePop)
         
         topStick.setScale(0.3)
         bottomStick.setScale(0.3)
@@ -264,8 +312,39 @@ class GameScene: SKScene {
     
         //topStick.zRotation = CGFloat(Double.pi)
         
-        topPop.position = CGPoint(x: topStick.position.x, y: topStick.position.y - topStick.frame.height/2)
-        bottomPop.position = CGPoint(x: bottomStick.position.x, y: -bottomStick.position.y + bottomStick.frame.height/2)
+        topPop.position = CGPoint(x: topStick.position.x, y: topStick.position.y - topStick.frame.height/2 + 40)
+        bottomPop.position = CGPoint(x: bottomStick.position.x, y: -bottomStick.position.y + bottomStick.frame.height/2 - 40)
+        
+        topStick.physicsBody = SKPhysicsBody(rectangleOf: topStick.size)
+        topStick.physicsBody?.categoryBitMask = PhysicsCategories.lollipopCategory
+        topStick.physicsBody?.collisionBitMask = PhysicsCategories.birdCategory
+        topStick.physicsBody?.contactTestBitMask = PhysicsCategories.birdCategory
+        topStick.physicsBody?.isDynamic = false
+        topStick.physicsBody?.affectedByGravity = false
+        
+        bottomStick.physicsBody = SKPhysicsBody(rectangleOf: bottomStick.size)
+        bottomStick.physicsBody?.categoryBitMask = PhysicsCategories.lollipopCategory
+        bottomStick.physicsBody?.collisionBitMask = PhysicsCategories.birdCategory
+        bottomStick.physicsBody?.contactTestBitMask = PhysicsCategories.birdCategory
+        bottomStick.physicsBody?.isDynamic = false
+        bottomStick.physicsBody?.affectedByGravity = false
+        
+        
+        topPop.physicsBody = SKPhysicsBody(circleOfRadius: topPop.size.height/2)
+        topPop.physicsBody?.categoryBitMask = PhysicsCategories.lollipopCategory
+        topPop.physicsBody?.collisionBitMask = PhysicsCategories.birdCategory
+        topPop.physicsBody?.contactTestBitMask = PhysicsCategories.birdCategory
+        topPop.physicsBody?.isDynamic = false
+        topPop.physicsBody?.affectedByGravity = false
+    
+        
+        bottomPop.physicsBody = SKPhysicsBody(circleOfRadius: bottomPop.size.height/2)
+        bottomPop.physicsBody?.categoryBitMask = PhysicsCategories.lollipopCategory
+        bottomPop.physicsBody?.collisionBitMask = PhysicsCategories.birdCategory
+        bottomPop.physicsBody?.contactTestBitMask = PhysicsCategories.birdCategory
+        bottomPop.physicsBody?.isDynamic = false
+        bottomPop.physicsBody?.affectedByGravity = false
+    
         
         
         
@@ -280,7 +359,7 @@ class GameScene: SKScene {
         bottomPop.zPosition = ZPositions.pop
         topPop.zPosition = ZPositions.pop
         
-        let randomPosition = random(min: -200, max: 200)
+        let randomPosition = random(min: -150, max: 150)
         popPair.position.y += randomPosition
         
         popPair.run(moveAndRemove)
@@ -302,6 +381,26 @@ extension GameScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         let firstBody = contact.bodyA
         let secondBody = contact.bodyB
+        
+        if firstBody.categoryBitMask == PhysicsCategories.birdCategory && secondBody.categoryBitMask == PhysicsCategories.lollipopCategory || firstBody.categoryBitMask == PhysicsCategories.lollipopCategory && secondBody.categoryBitMask == PhysicsCategories.birdCategory || firstBody.categoryBitMask == PhysicsCategories.birdCategory && secondBody.categoryBitMask == PhysicsCategories.groundCategory || firstBody.categoryBitMask == PhysicsCategories.groundCategory && secondBody.categoryBitMask == PhysicsCategories.birdCategory{
+            enumerateChildNodes(withName: "popPair", using: ({
+                (node, error) in
+                node.speed = 0
+                self.removeAllActions()
+            }))
+            if died == false{
+                died = true
+                createRestartBtn()
+                pauseBtn.removeFromParent()
+                self.bird.removeAllActions()
+            }
+        } else if firstBody.categoryBitMask == PhysicsCategories.birdCategory && secondBody.categoryBitMask == PhysicsCategories.flowerCategory {
+            increaseScore()
+            secondBody.node?.removeFromParent()
+        } else if firstBody.categoryBitMask == PhysicsCategories.flowerCategory && secondBody.categoryBitMask == PhysicsCategories.birdCategory {
+            increaseScore()
+            firstBody.node?.removeFromParent()
+        }
     }
 }
 
