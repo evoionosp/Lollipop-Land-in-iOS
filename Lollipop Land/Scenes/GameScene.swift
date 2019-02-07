@@ -68,11 +68,11 @@ class GameScene: SKScene {
             moveAndRemove = SKAction.sequence([movePops, removePops])
             
             bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-            bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 50))
+            bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: UIScreen.main.bounds.height/14))
         } else {
             if died == false {
                 bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 50))
+                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: UIScreen.main.bounds.height/14))
             }
         }
         
@@ -180,6 +180,7 @@ class GameScene: SKScene {
     }
     
     func increaseScore() {
+        print("Height: \(UIScreen.main.bounds.height), Width: \(UIScreen.main.bounds.width)")
         score += 1
         scoreLabel.text = "\(score)"
     }
@@ -197,7 +198,7 @@ class GameScene: SKScene {
     
     func createBird() -> SKSpriteNode {
         let bird = SKSpriteNode(texture: SKTextureAtlas(named:"player").textureNamed("bird1"))
-        bird.size = CGSize(width: 50, height: 50)
+        bird.size = CGSize(width: UIScreen.main.bounds.height / 13, height: UIScreen.main.bounds.height / 13)
         bird.position = CGPoint(x:self.frame.midX, y:self.frame.midY)
         
         bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.width / 2)
@@ -307,13 +308,13 @@ class GameScene: SKScene {
         topPop.setScale(1)
         bottomPop.setScale(1)
         
-        topStick.position = CGPoint(x: self.frame.width + 25, y: UIScreen.main.bounds.height)  //+420
-        bottomStick.position = CGPoint(x: self.frame.width + 25, y: 0)  //-420
+        topStick.position = CGPoint(x: self.frame.width + UIScreen.main.bounds.height/10, y: UIScreen.main.bounds.height)  //+420
+        bottomStick.position = CGPoint(x: self.frame.width + UIScreen.main.bounds.height/10, y: 0)  //-420
     
         //topStick.zRotation = CGFloat(Double.pi)
         
-        topPop.position = CGPoint(x: topStick.position.x, y: topStick.position.y - topStick.frame.height/2 + 40)
-        bottomPop.position = CGPoint(x: bottomStick.position.x, y: -bottomStick.position.y + bottomStick.frame.height/2 - 40)
+        topPop.position = CGPoint(x: topStick.position.x, y: topStick.position.y - topStick.frame.height/2 + UIScreen.main.bounds.height/16)
+        bottomPop.position = CGPoint(x: bottomStick.position.x, y: -bottomStick.position.y + bottomStick.frame.height/2 - UIScreen.main.bounds.height/16)
         
         topStick.physicsBody = SKPhysicsBody(rectangleOf: topStick.size)
         topStick.physicsBody?.categoryBitMask = PhysicsCategories.lollipopCategory
@@ -359,7 +360,7 @@ class GameScene: SKScene {
         bottomPop.zPosition = ZPositions.pop
         topPop.zPosition = ZPositions.pop
         
-        let randomPosition = random(min: -150, max: 150)
+        let randomPosition = random(min: -UIScreen.main.bounds.height/4, max: UIScreen.main.bounds.height/4)
         popPair.position.y += randomPosition
         
         popPair.run(moveAndRemove)
