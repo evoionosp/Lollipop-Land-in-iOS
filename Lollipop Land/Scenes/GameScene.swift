@@ -48,6 +48,7 @@ class GameScene: SKScene {
                 self.logoImg.removeFromParent()
             })
             taptoplayLbl.removeFromParent()
+            self.bird.run(repeatActionBird)
             SKAction.wait(forDuration: 3.5)
             let spawn = SKAction.run({
                 () in
@@ -69,10 +70,12 @@ class GameScene: SKScene {
             
             bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: UIScreen.main.bounds.height/14))
+            self.run(SKAction.playSoundFileNamed("jump", waitForCompletion: false))
         } else {
             if died == false {
                 bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: UIScreen.main.bounds.height/14))
+                self.run(SKAction.playSoundFileNamed("jump", waitForCompletion: false))
             }
         }
         
@@ -153,7 +156,7 @@ class GameScene: SKScene {
             self.addChild(background)
         }
         
-        //SET UP THE BIRD SPRITES FOR ANIMATION
+        
         birdSprites.append(birdAtlas.textureNamed("bird1"))
         birdSprites.append(birdAtlas.textureNamed("bird2"))
         birdSprites.append(birdAtlas.textureNamed("bird3"))
@@ -163,7 +166,7 @@ class GameScene: SKScene {
         bird.zPosition = ZPositions.bird
         self.addChild(bird)
         
-        //ANIMATE THE BIRD AND REPEAT THE ANIMATION FOREVER
+        
         let animatebird = SKAction.animate(with: self.birdSprites, timePerFrame: 0.1)
         self.repeatActionBird = SKAction.repeatForever(animatebird)
         
@@ -191,6 +194,18 @@ class GameScene: SKScene {
         UserDefaults.standard.set(score, forKey: "RecentScore")
         if score > UserDefaults.standard.integer(forKey: "HighScore"){
             UserDefaults.standard.set(score, forKey: "HighScore")
+        }
+        enumerateChildNodes(withName: "popPair", using: ({
+            (node, error) in
+            node.speed = 0
+            self.removeAllActions()
+        }))
+        if died == false{
+            died = true
+            self.run(SKAction.playSoundFileNamed("hit", waitForCompletion: true))
+            createRestartBtn()
+            pauseBtn.removeFromParent()
+            self.bird.removeAllActions()
         }
        // let gameoverScene = GameoverScene(size: view!.bounds.size)
        // view!.presentScene(gameoverScene)
@@ -347,9 +362,6 @@ class GameScene: SKScene {
         bottomPop.physicsBody?.affectedByGravity = false
     
         
-        
-        
-        
         popPair.addChild(topStick)
         popPair.addChild(topPop)
         popPair.addChild(bottomStick)
@@ -384,17 +396,7 @@ extension GameScene: SKPhysicsContactDelegate {
         let secondBody = contact.bodyB
         
         if firstBody.categoryBitMask == PhysicsCategories.birdCategory && secondBody.categoryBitMask == PhysicsCategories.lollipopCategory || firstBody.categoryBitMask == PhysicsCategories.lollipopCategory && secondBody.categoryBitMask == PhysicsCategories.birdCategory || firstBody.categoryBitMask == PhysicsCategories.birdCategory && secondBody.categoryBitMask == PhysicsCategories.groundCategory || firstBody.categoryBitMask == PhysicsCategories.groundCategory && secondBody.categoryBitMask == PhysicsCategories.birdCategory{
-            enumerateChildNodes(withName: "popPair", using: ({
-                (node, error) in
-                node.speed = 0
-                self.removeAllActions()
-            }))
-            if died == false{
-                died = true
-                createRestartBtn()
-                pauseBtn.removeFromParent()
-                self.bird.removeAllActions()
-            }
+            gameOver()
         } else if firstBody.categoryBitMask == PhysicsCategories.birdCategory && secondBody.categoryBitMask == PhysicsCategories.flowerCategory {
             increaseScore()
             secondBody.node?.removeFromParent()

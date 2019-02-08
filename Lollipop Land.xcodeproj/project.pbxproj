@@ -15,6 +15,8 @@
 		5231743022001F21004346BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5231742E22001F21004346BA /* LaunchScreen.storyboard */; };
 		5231743E22002102004346BA /* player.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 5231743D22002102004346BA /* player.atlas */; };
 		5231744022002292004346BA /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5231743F22002292004346BA /* Setting.swift */; };
+		529E4F04220D0262005DB61E /* jump.wav in Resources */ = {isa = PBXBuildFile; fileRef = 529E4F03220D0262005DB61E /* jump.wav */; };
+		529E4F06220D0510005DB61E /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 529E4F05220D0510005DB61E /* hit.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		5231743122001F21004346BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5231743D22002102004346BA /* player.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = player.atlas; sourceTree = "<group>"; };
 		5231743F22002292004346BA /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
+		529E4F03220D0262005DB61E /* jump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = jump.wav; sourceTree = "<group>"; };
+		529E4F05220D0510005DB61E /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +94,8 @@
 		5231743922001FD1004346BA /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				529E4F05220D0510005DB61E /* hit.wav */,
+				529E4F03220D0262005DB61E /* jump.wav */,
 				5231742922001F20004346BA /* Main.storyboard */,
 				5231742C22001F21004346BA /* Assets.xcassets */,
 				5231742E22001F21004346BA /* LaunchScreen.storyboard */,
@@ -163,8 +169,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				529E4F04220D0262005DB61E /* jump.wav in Resources */,
 				5231743E22002102004346BA /* player.atlas in Resources */,
 				5231742B22001F20004346BA /* Main.storyboard in Resources */,
+				529E4F06220D0510005DB61E /* hit.wav in Resources */,
 				5231742D22001F21004346BA /* Assets.xcassets in Resources */,
 				5231743022001F21004346BA /* LaunchScreen.storyboard in Resources */,
 			);
